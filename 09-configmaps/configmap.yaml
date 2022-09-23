@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-configmap-web-content
+  namespace: codeweek
+data:
+  index.html: |-
+    <html>
+    <head>
+      <title>Hello World</title>
+    </head>
+    <body>
+      <h1>Hello World</h1>
+      <a href="test.html">testpage</a>
+    </body>
+    </html>
+  test.html: |-
+    <html>
+    <head>
+      <title>Test</title>
+    </head>
+    <body>
+      <h1>Test</h1>
+      <a href="index.html">zur&uuml;ck</a>
+    </body>
+    </html>

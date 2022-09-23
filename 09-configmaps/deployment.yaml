@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configmap-example
+  namespace: codeweek
+spec:
+  selector:
+    matchLabels:
+      app: configmap-example
+  template:
+    metadata:
+      labels:
+        app: configmap-example
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.19
+          resources:
+            requests:
+              cpu: 50m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+          livenessProbe:
+            tcpSocket:
+              port: 80
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: web-content
+      volumes:
+        - name: web-content
+          configMap:
+            name: test-configmap-web-content

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pvc-demo-nextcloud-without
+spec:
+  selector:
+    matchLabels:
+      app: nextcloud-no-pvc
+  template:
+    metadata:
+      labels:
+        app: nextcloud-no-pvc
+    spec:
+      containers:
+        - name: nextcloud
+          image: nextcloud:20.0.0-apache
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 500Mi

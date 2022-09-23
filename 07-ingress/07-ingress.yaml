@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: codeweek
+spec:
+  rules:
+    - host: test.193.148.162.222.xip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: testservice
+                port:
+                  name: http
+            pathType: Prefix
+            path: /

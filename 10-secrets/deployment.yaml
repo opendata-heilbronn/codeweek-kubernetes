@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrets-example
+  namespace: codeweek
+spec:
+  selector:
+    matchLabels:
+      app: secrets-example
+  template:
+    metadata:
+      labels:
+        app: secrets-example
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.19
+          resources:
+            requests:
+              cpu: 50m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            tcpSocket:
+              port: 80
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/default.conf
+              name: nginx-config
+              subPath: default.conf
+            - mountPath: /secrets/htpasswd
+              name: authentication
+              subPath: htpasswd
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: secrets-example-nginx-config
+        - name: authentication
+          secret:
+            secretName: secrets-example-authentication

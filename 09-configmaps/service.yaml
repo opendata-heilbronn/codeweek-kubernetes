@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: configmap-example
+  namespace: codeweek
+spec:
+  ports:
+    - port: 80
+      name: http
+  selector:
+    app: configmap-example
+  type: ClusterIP

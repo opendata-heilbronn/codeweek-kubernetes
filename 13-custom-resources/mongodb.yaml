@@ -1,0 +1,30 @@
+apiVersion: mongodb.com/v1
+kind: MongoDB
+metadata:
+  name: mongodb
+  namespace: codeweek
+spec:
+  security:
+    authentication:
+      modes:
+      - SCRAM
+  type: ReplicaSet
+  users:
+    - name: patrick246
+      db: admin
+      passwordSecretRef:
+        name: mongodb-password
+      roles:
+        - db: admin
+          name: clusterAdmin
+  version: "4.4.0"
+  members: 3
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-password
+  namespace: codeweek
+type: Opaque
+stringData:
+  password: admin

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-controller
+  namespace: codeweek
+spec:
+  selector:
+    matchLabels:
+      app: ingress-controller
+  template:
+    metadata:
+      labels:
+        app: ingress-controller
+    spec:
+      serviceAccountName: traefik
+      containers:
+        - name: traefik
+          image: "library/traefik:2.3"
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 8080
+              name: management
+          args:
+            - --providers.kubernetesingress=true
+            - --providers.kubernetesingress.ingressendpoint.publishedservice=codeweek/ingress
+            - --ping=true
+            - --entryPoints.web.address=:80
+            - --entryPoints.traefik.address=:8080
+            - --log.level=INFO
+            - --accesslog=true
+          livenessProbe:
+            tcpSocket:
+              port: 80
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /ping

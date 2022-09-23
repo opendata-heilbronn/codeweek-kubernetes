@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: secrets-example
+  namespace: codeweek
+spec:
+  rules:
+    - host: secrets.193.148.163.39.xip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: secrets-example
+                port:
+                  name: http
+            path: /
+            pathType: Prefix
